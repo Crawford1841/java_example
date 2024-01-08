@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.example</groupId>
+  <artifactId>java_example</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <parent>
+    <artifactId>spring-boot-dependencies</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <version>2.7.14</version>
+  </parent>
+  <name>java_example</name>
+  <url>http://maven.apache.org</url>
+  <modules>
+    <module>java_case</module>
+    <module>java_rpc</module>
+    <module>java_tomcat</module>
+    <module>java_disruptor</module>
+    <module>java_disruptor/netty_client</module>
+    <module>java_disruptor/netty_server</module>
+    <module>java_disruptor/netty-common</module>
+    <module>java_mysql</module>
+    <module>java_mongodb</module>
+    <module>java_spring</module>
+    <module>java_spring/spring_v1</module>
+      <module>java_spring/spring_v2</module>
+    <module>java_spring/spring_v3</module>
+      <module>java_spring/spring_v4</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.22</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.7.28</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>2.5</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>
