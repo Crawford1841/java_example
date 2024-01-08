@@ -29,6 +29,7 @@
       <module>java_spring/spring_v2</module>
     <module>java_spring/spring_v3</module>
       <module>java_spring/spring_v4</module>
+      <module>java_spring/spring_v5</module>
   </modules>
 
   <properties>
