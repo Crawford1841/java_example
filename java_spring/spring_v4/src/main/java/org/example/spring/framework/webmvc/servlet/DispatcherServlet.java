@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -16,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /*
  * @author huangwei
  * @emaill 1142488172@qq.com
@@ -25,57 +27,80 @@ import java.util.regex.Pattern;
 public class DispatcherServlet extends HttpServlet {
 
     //保存Controller中URL和Method的对应关系
-    private List<HandlerMapping> handlerMapping = new CopyOnWriteArrayList<>();
+    private List<HandlerMapping> handlerMappings = new CopyOnWriteArrayList<>();
 
-    private Map<HandlerMapping,HandlerAdapter> handlerAdapters = new ConcurrentHashMap<>();
+    private Map<HandlerMapping, HandlerAdapter> handlerAdapters = new ConcurrentHashMap<>();
 
     private List<ViewResolver> viewResolvers = new ArrayList<ViewResolver>();
 
     //IOC容器的访问上下文
-    private ApplicationContext applicationContext;
+    private ApplicationContext applicationContext = null;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         this.applicationContext = new ApplicationContext(config.getInitParameter("contextConfigLocation"));
         //==========MVC功能=======
         //5、初始化HandlerMapping
-        doInitHandlerMapping();
+        initStrategies(applicationContext);
         System.out.println("SpringMVC framework is init.");
     }
 
-    private void doInitHandlerMapping() {
-        if(this.applicationContext.getBeanDefinitionCount()==0){
+    private void initStrategies(ApplicationContext context) {
+        //handlerMapping
+        doInitHandlerMapping(context);
+        //初始化参数适配器
+        doInitHandlerAdapters(context);
+        //初始化视图转换器
+        doInitViewResolvers(context);
+    }
+
+    private void doInitHandlerMapping(ApplicationContext context) {
+        if (this.applicationContext.getBeanDefinitionCount() == 0) {
             return;
         }
-        for(String beanName:this.applicationContext.getBeanDefinitionNames()){
+        for (String beanName : this.applicationContext.getBeanDefinitionNames()) {
             Object instance = applicationContext.getBean(beanName);
             Class<?> clazz = instance.getClass();
-            if(!clazz.isAnnotationPresent(Controller.class)){
+            if (!clazz.isAnnotationPresent(Controller.class)) {
                 continue;
             }
             String baseUrl = "";
-            if(clazz.isAnnotationPresent(RequestMapping.class)){
+            if (clazz.isAnnotationPresent(RequestMapping.class)) {
                 RequestMapping requestMapping = clazz.getAnnotation(RequestMapping.class);
                 baseUrl = requestMapping.value();
 
             }
 
             //只迭代public方法
-            for(Method method:clazz.getMethods()){
-                if(!method.isAnnotationPresent(RequestMapping.class)){
+            for (Method method : clazz.getMethods()) {
+                if (!method.isAnnotationPresent(RequestMapping.class)) {
                     continue;
                 }
                 RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-                String regex = ("/" + baseUrl + "/" + requestMapping.value()).replaceAll("/+", "/");;
+                String regex = ("/" + baseUrl + "/" + requestMapping.value())
+                        .replaceAll("\\*", ".*")
+                        .replaceAll("/+", "/");
                 Pattern pattern = Pattern.compile(regex);
-                this.handlerMapping.add(new HandlerMapping(pattern,method));
-                System.out.println("Mapped " + pattern + "," + method);
-
+                this.handlerMappings.add(new HandlerMapping(pattern, instance, method));
+                System.out.println("Mapped " + regex + "-->" + method);
             }
-
-
         }
+    }
 
+    private void doInitHandlerAdapters(ApplicationContext context) {
+        for (HandlerMapping handlerMapping : handlerMappings) {
+            this.handlerAdapters.put(handlerMapping,new HandlerAdapter());
+        }
+    }
+
+    private void doInitViewResolvers(ApplicationContext context) {
+        String templateRoot = context.getConfig().getProperty("templateRoot");
+        String templateRootPath = this.getClass().getClassLoader().getResource(templateRoot).getFile();
+
+        File templateRootDir = new File(templateRootPath);
+        for (File file : templateRootDir.listFiles()) {
+            this.viewResolvers.add(new ViewResolver(templateRoot));
+        }
 
     }
 
@@ -88,56 +113,55 @@ public class DispatcherServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //6、根据URL委派给具体的调用方法
         try {
-            doDispatch(req,resp);
+            doDispatch(req, resp);
         } catch (Exception e) {
             e.printStackTrace();
-            resp.getWriter().write("500 Exception,Detail: " + Arrays.toString(e.getStackTrace()));
+//            resp.getWriter().write("500 Exception,Detail: " + Arrays.toString(e.getStackTrace()));
+            Map<String,Object> model = new HashMap<String, Object>();
+            model.put("detail","500 Exception,Detail: ");
+            model.put("stackTrace",Arrays.toString(e.getStackTrace()));
+            try {
+                processDispatchResult(req,resp,new ModelAndView("500",model));
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
-    private void doDispatch(HttpServletRequest req, HttpServletResponse resp)throws Exception {
+    private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HandlerMapping handlerMapping = getHandler(req);
-        if(handlerMapping == null){
-            resp.getWriter().write("404 Not Found！！！");
+        if (handlerMapping == null) {
+            processDispatchResult(req,resp,new ModelAndView("404"));
             return;
         }
-        //获得方法的形参列表
-        Class<?>[] paramTypes = handlerMapping.getParamTypes();
-        Object[] paramValues = new Object[paramTypes.length];
-        Map<String, String[]> params = req.getParameterMap();
+        //2、根据HandlerMapping拿到HandlerAdapter
+        HandlerAdapter ha = getHandlerAdapter(handlerMapping);
 
-        for (Map.Entry<String, String[]> parm : params.entrySet()) {
-            String value = Arrays.toString(parm.getValue()).replaceAll("\\[|\\]", "")
-                    .replaceAll("\\s", ",");
+        //3、根据HandlerAdapter拿到对应的ModelAndView
+        ModelAndView mv = ha.handler(req,resp,handlerMapping);
 
-            if (!handlerMapping.getParamIndexMapping().containsKey(parm.getKey())) {
-                continue;
-            }
+        //4、根据ViewResolver找到对应View对象
+        //通过View对象渲染页面，并返回
+        processDispatchResult(req,resp,mv);
+    }
 
-            int index = handlerMapping.getParamIndexMapping().get(parm.getKey());
-            paramValues[index] = convert(paramTypes[index], value);
+    private void processDispatchResult(HttpServletRequest req, HttpServletResponse resp, ModelAndView mv) throws Exception {
+        if(null == mv){return;}
+        if(this.viewResolvers.isEmpty()){return;}
+
+        for (ViewResolver viewResolver : this.viewResolvers) {
+            View view = viewResolver.resolveViewName(mv.getViewName());
+            view.render(mv.getModel(),req,resp);
+            return;
         }
-        if (handlerMapping.getParamIndexMapping().containsKey(HttpServletRequest.class.getName())) {
-            int reqIndex = handlerMapping.getParamIndexMapping().get(HttpServletRequest.class.getName());
-            paramValues[reqIndex] = req;
-        }
-
-        if (handlerMapping.getParamIndexMapping().containsKey(HttpServletResponse.class.getName())) {
-            int respIndex = handlerMapping.getParamIndexMapping().get(HttpServletResponse.class.getName());
-            paramValues[respIndex] = resp;
-        }
-
-        String beanName = toLowerFirstCase(handlerMapping.getMethod().getDeclaringClass().getSimpleName());
-        /**
-         * TODO 解决循环依赖的问题
-         */
-        handlerMapping.getMethod().invoke(applicationContext.getBean(beanName), paramValues);
+    }
+    private HandlerAdapter getHandlerAdapter(HandlerMapping handler) {
+        if(this.handlerAdapters.isEmpty()){ return null;}
+        HandlerAdapter ha = this.handlerAdapters.get(handler);
+        return ha;
     }
 
     private HandlerMapping getHandler(HttpServletRequest req) {
-        if (handlerMapping.isEmpty()) {
-            return null;
-        }
         //绝对路径
         String url = req.getRequestURI();
         //处理成相对路径
@@ -147,7 +171,7 @@ public class DispatcherServlet extends HttpServlet {
         /**
          * 大型系统会存在很庞大的接口，这样循环去取是否效率上会存在问题
          */
-        for (HandlerMapping handlerMapping : this.handlerMapping) {
+        for (HandlerMapping handlerMapping : this.handlerMappings) {
             Matcher matcher = handlerMapping.getPattern().matcher(url);
             if (!matcher.matches()) {
                 continue;
@@ -173,7 +197,7 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private String toLowerFirstCase(String simpleName) {
-        char [] chars = simpleName.toCharArray();
+        char[] chars = simpleName.toCharArray();
         chars[0] += 32;     //利用了ASCII码，大写字母和小写相差32这个规律
         return String.valueOf(chars);
     }

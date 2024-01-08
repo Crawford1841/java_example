@@ -98,5 +98,7 @@ public class BeanDefinitionReader {
         chars[0] += 32;     //利用了ASCII码，大写字母和小写相差32这个规律
         return String.valueOf(chars);
     }
-
+    public Properties getConfig() {
+        return this.contextConfig;
+    }
 }

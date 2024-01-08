@@ -32,13 +32,13 @@ public class View {
         while (null != (line = ra.readLine())){
             line = new String(line.getBytes("iso-8859-1"),"utf-8");
 
-            Pattern pattern = Pattern.compile("￥\\{[^\\}]+\\}",Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("\\$\\{[^\\}]+\\}",Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(line);
             while (matcher.find()){
                 //  ￥{teacher}
                 String paramName = matcher.group();
 
-                paramName = paramName.replaceAll("￥\\{|\\}","");
+                paramName = paramName.replaceAll("\\$\\{|\\}","");
                 Object paramValue = model.get(paramName);
                 if(null == paramValue){continue;}
                 line = matcher.replaceFirst(makeStringForRegExp(paramValue.toString()));

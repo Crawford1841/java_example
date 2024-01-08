@@ -16,10 +16,7 @@ import org.example.spring.framework.beans.support.DefaultListableBeanFactory;
 import org.example.spring.framework.core.BeanFactory;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -194,4 +191,7 @@ public class ApplicationContext implements BeanFactory {
         return this.registry.beanDefinitionMap.keySet().toArray(new String[0]);
     }
 
+    public Properties getConfig() {
+        return this.reader.getConfig();
+    }
 }
