@@ -1,5 +1,8 @@
 package org.example.demo.action;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.example.demo.service.IModifyService;
 import org.example.demo.service.IQueryService;
 import org.example.spring.framework.annotation.Autowired;
@@ -30,6 +33,7 @@ public class MyAction {
 	public ModelAndView query(HttpServletRequest request, HttpServletResponse response,
 								@RequestParam("name") String name){
 		String result = queryService.query(name);
+		int i = 10/0;
 		return out(response,result);
 	}
 	
@@ -67,7 +71,10 @@ public class MyAction {
 		try {
 			resp.getWriter().write(str);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Map<String,String> model = new HashMap<String,String>();
+			model.put("detail",e.getCause().getMessage());
+			model.put("stackTrace", Arrays.toString(e.getStackTrace()));
+			return new ModelAndView("500",model);
 		}
 		return null;
 	}

@@ -1,0 +1,35 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<!-- 配置事务通知属性 -->
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+			<tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception,RuntimeException,SQLException"/>
+			<tx:method name="login" propagation="NOT_SUPPORTED"/>
+			<tx:method name="query*" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut"/>
+        <aop:aspect ref="dataSource">
+            <aop:pointcut id="transactionPointcut" expression="execution(public * org.example..*.service..*Service.*(..))" />
+        </aop:aspect>
+    </aop:config>
+	
+</beans>

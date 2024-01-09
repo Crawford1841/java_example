@@ -36,7 +36,7 @@ public class QueryService implements IQueryService {
 
 	@Override
 	public String appear() {
-		log.info("========调用循环依赖=========");
+		log.info("========QueryService调用循环依赖=========");
 		return modifyService.appear();
 		//return "request success!";
 	}

@@ -9,15 +9,18 @@ package org.example.spring.framework.context;
 import org.example.spring.framework.annotation.Autowired;
 import org.example.spring.framework.annotation.Controller;
 import org.example.spring.framework.annotation.Service;
+import org.example.spring.framework.aop.DefaultAopProxyFactory;
 import org.example.spring.framework.beans.BeanWrapper;
 import org.example.spring.framework.beans.config.BeanDefinition;
 import org.example.spring.framework.beans.support.BeanDefinitionReader;
 import org.example.spring.framework.beans.support.DefaultListableBeanFactory;
+import org.example.spring.framework.aop.config.AopConfig;
 import org.example.spring.framework.core.BeanFactory;
 
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import org.example.spring.framework.aop.support.AdvisedSupport;
 
 /**
  * 实现Spring中的Application上下文的功能
@@ -25,6 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ApplicationContext implements BeanFactory {
 
     private DefaultListableBeanFactory registry = new DefaultListableBeanFactory();
+
+    //AOP代理工厂
+    private DefaultAopProxyFactory proxyFactory = new DefaultAopProxyFactory();
 
     //循环依赖的表示，当前正在创建的BeanName
     private Set<String> singletonsCurrentlyInCreatetion = new HashSet<>();
@@ -172,6 +178,21 @@ public class ApplicationContext implements BeanFactory {
             Class<?> clazz = Class.forName(className);
             instance = clazz.newInstance();
             //如果是代理对象则触发AOP的逻辑
+            //==================AOP开始=========================
+            //如果满足条件，就直接返回Proxy对象
+            //1、加载AOP的配置文件
+            AdvisedSupport config = instantionAopConfig(beanDefinition);
+            config.setTargetClass(clazz);
+            config.setTarget(instance);
+            //判断规则，要不要生成代理类，如果要就覆盖原生对象
+            //如果不要就不做任何处理，返回原生对象
+            /**
+             * TODO 加入AOP后，又重新导致了循环依赖的问题，如何解决呢？
+             */
+            if(config.pointCutMath()){
+                instance = proxyFactory.createAopProxy(config).getProxy();
+            }
+
             this.factoryBeanObjectCache.put(beanName, instance);
             this.factoryBeanObjectCache.put(clazz.getName(), instance);
             for (Class<?> i : clazz.getInterfaces()) {
@@ -181,6 +202,22 @@ public class ApplicationContext implements BeanFactory {
             e.printStackTrace();
         }
         return instance;
+    }
+
+    /**
+     * 简化配置，Spring原版是XML解析，这里我们直接采用Properties
+     * @param beanDefinition
+     * @return
+     */
+    private AdvisedSupport instantionAopConfig(BeanDefinition beanDefinition) {
+        AopConfig config = new AopConfig();
+        config.setPointCut(this.reader.getConfig().getProperty("pointCut"));
+        config.setAspectClass(this.reader.getConfig().getProperty("aspectClass"));
+        config.setAspectBefore(this.reader.getConfig().getProperty("aspectBefore"));
+        config.setAspectAfter(this.reader.getConfig().getProperty("aspectAfter"));
+        config.setAspectAfterThrow(this.reader.getConfig().getProperty("aspectAfterThrow"));
+        config.setAspectAfterThrowingName(this.reader.getConfig().getProperty("aspectAfterThrowingName"));
+        return new AdvisedSupport(config);
     }
 
     public int getBeanDefinitionCount() {

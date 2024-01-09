@@ -9,10 +9,13 @@
   </parent>
 
   <artifactId>java_spring</artifactId>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <name>java_spring</name>
   <url>http://maven.apache.org</url>
+  <modules>
+    <module>spring_orm</module>
+  </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
