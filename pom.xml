@@ -30,6 +30,9 @@
     <module>java_spring/spring_v3</module>
       <module>java_spring/spring_v4</module>
       <module>java_spring/spring_v5</module>
+    <module>java_mybatis</module>
+    <module>java_mybatis/mybatis_v1</module>
+    <module>java_mybatis/mybatis_v2</module>
   </modules>
 
   <properties>
@@ -60,6 +63,12 @@
         <artifactId>servlet-api</artifactId>
         <version>2.5</version>
         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.11</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
