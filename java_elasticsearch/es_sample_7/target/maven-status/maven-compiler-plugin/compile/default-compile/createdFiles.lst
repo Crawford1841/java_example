@@ -1,0 +1,13 @@
+org\example\client\ESTest_Doc_Search.class
+org\example\client\ESTest_Doc_Insert_Batch.class
+org\example\client\ESTest_Doc_Update.class
+org\example\client\ESTest_Doc_Delete.class
+org\example\client\ESTest_Index_Create.class
+org\example\entity\User.class
+org\example\client\ESTest_Client.class
+org\example\client\ESTest_Index_Search.class
+org\example\client\ESTest_Doc_Delete_Batch.class
+org\example\client\ESTest_Doc_Query.class
+org\example\client\ESTest_Index_Delete.class
+org\example\client\ESTest_Doc_Insert.class
+org\example\client\ESTest_Doc_Get.class

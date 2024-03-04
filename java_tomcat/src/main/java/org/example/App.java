@@ -37,6 +37,7 @@ public class App {
      */
 
     public static void main(String[] args) throws Exception {
+        //http://localhost:8080/skuServlet?name=huangwei
         Server server = new Server("org.example.webapp");
         server.start();
     }
