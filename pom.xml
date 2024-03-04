@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
@@ -12,6 +12,12 @@
     <groupId>org.springframework.boot</groupId>
     <version>2.7.14</version>
   </parent>
+  <!--  <parent>-->
+  <!--    <groupId>org.springframework.boot</groupId>-->
+  <!--    <artifactId>spring-boot-starter-parent</artifactId>-->
+  <!--    <version>2.7.14</version>-->
+  <!--    <relativePath/>-->
+  <!--  </parent>-->
   <name>java_example</name>
   <url>http://maven.apache.org</url>
   <modules>
@@ -26,21 +32,68 @@
     <module>java_mongodb</module>
     <module>java_spring</module>
     <module>java_spring/spring_v1</module>
-      <module>java_spring/spring_v2</module>
+    <module>java_spring/spring_v2</module>
     <module>java_spring/spring_v3</module>
-      <module>java_spring/spring_v4</module>
-      <module>java_spring/spring_v5</module>
+    <module>java_spring/spring_v4</module>
+    <module>java_spring/spring_v5</module>
     <module>java_mybatis</module>
     <module>java_mybatis/mybatis_v1</module>
     <module>java_mybatis/mybatis_v2</module>
+    <module>java_elasticsearch</module>
+    <module>java_elasticsearch/es_springboot_7</module>
   </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring.version>5.0.2.RELEASE</spring.version>
+    <servlet.api.version>2.4</servlet.api.version>
   </properties>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>4.1.8.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>3.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>com.lmax</groupId>
+        <artifactId>disruptor</artifactId>
+        <version>3.3.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.marshalling</groupId>
+        <artifactId>jboss-marshalling</artifactId>
+        <version>2.0.0.CR1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.marshalling</groupId>
+        <artifactId>jboss-marshalling-serial</artifactId>
+        <version>2.0.0.CR1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.reflections</groupId>
+        <artifactId>reflections</artifactId>
+        <version>0.10.2</version>
+      </dependency>
+
+
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>${servlet.api.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.dom4j</groupId>
+        <artifactId>dom4j</artifactId>
+        <version>2.1.3</version>
+      </dependency>
+
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
@@ -69,6 +122,31 @@
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>8.0.11</version>
+      </dependency>
+
+
+
+      <dependency>
+        <groupId>org.elasticsearch</groupId>
+        <artifactId>elasticsearch</artifactId>
+        <version>7.8.0</version>
+      </dependency>
+      <!-- elasticsearch的客户端 -->
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-high-level-client</artifactId>
+        <version>7.8.0</version>
+      </dependency>
+      <!-- elasticsearch依赖2.x的log4j -->
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.9.9</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
