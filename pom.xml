@@ -41,6 +41,7 @@
     <module>java_mybatis/mybatis_v2</module>
     <module>java_elasticsearch</module>
     <module>java_elasticsearch/es_springboot_7</module>
+    <module>java_desgin</module>
   </modules>
 
   <properties>
