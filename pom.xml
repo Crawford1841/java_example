@@ -42,7 +42,7 @@
     <module>java_elasticsearch</module>
     <module>java_elasticsearch/es_springboot_7</module>
     <module>java_desgin</module>
-    <module>java_maven_profile</module>
+    <module>docment_tools</module>
   </modules>
 
   <properties>
