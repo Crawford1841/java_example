@@ -60,11 +60,15 @@ public class PdfMergeTools {
 //        sort(collect);
 //        File f = mulFile2One(collect, "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\讲义\\预习.pdf");
 
-        File file = new File("D:\\考试\\CPA笔记精选\\会计\\正式课程\\讲义");
+        File file = new File("D:\\考试\\极客时间-高级Java工程师体系课2.0\\资料代码\\课件代码");
         File[] files = file.listFiles();
         List<File> collect = Arrays.stream(files).collect(Collectors.toList());
-        sort(collect);
-        File f = mulFile2One(collect, "D:\\考试\\CPA笔记精选\\会计\\正式课程\\讲义\\基础课-会计.pdf");
+        List<File> pdfs = collect.stream().filter(item -> {
+            String suffix = item.getName().substring(item.getName().lastIndexOf(".")+1, item.getName().length());
+            return "pdf".equals(suffix);
+        }).collect(Collectors.toList());
+        sort(pdfs);
+        File f = mulFile2One(pdfs, "D:\\考试\\极客时间-高级Java工程师体系课2.0\\资料代码\\课件代码\\网络编程.pdf");
         System.out.println(f.length());
     }
 
