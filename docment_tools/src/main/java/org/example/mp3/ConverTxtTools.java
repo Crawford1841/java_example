@@ -18,8 +18,11 @@ import org.vosk.Model;
 import org.vosk.Recognizer;
 
 import javax.sound.sampled.AudioSystem;
+import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class ConverTxtTools {
     /**
@@ -28,28 +31,29 @@ public class ConverTxtTools {
      * @param modelPath 模型路径
      * @param mp3Path   mp3路径
      */
-    public static void Mp3toText(String modelPath, String mp3Path) throws Exception {
+    public static void Mp3toText(String modelPath, String mp3Path, String savePath) throws Exception {
         LibVosk.setLogLevel(LogLevel.DEBUG);
+        String txtName = mp3Path.substring(mp3Path.lastIndexOf("\\") + 1, mp3Path.lastIndexOf("."));
+        Model model = new Model(modelPath);
+        InputStream ais = AudioSystem.getAudioInputStream(FileUtil.getInputStream(mp3Path));
+        Recognizer recognizer = new Recognizer(model, 16000);
 
-        try (Model model = new Model(modelPath);
-             InputStream ais = AudioSystem.getAudioInputStream(FileUtil.getInputStream(mp3Path));
-             Recognizer recognizer = new Recognizer(model, 16000)) {
-
-            int bytes;
-            byte[] b = new byte[4096];
-            while ((bytes = ais.read(b)) >= 0) {
-                recognizer.acceptWaveForm(b, bytes);
-            }
-
-            System.out.println(recognizer.getFinalResult() + System.lineSeparator());
+        int bytes;
+        byte[] b = new byte[4096];
+        while ((bytes = ais.read(b)) >= 0) {
+            recognizer.acceptWaveForm(b, bytes);
         }
+        String result = recognizer.getFinalResult() + System.lineSeparator();
+        FileUtil.writeBytes(result.getBytes(), savePath + "\\" + txtName+".txt");
+        System.out.println(result);
     }
+
     /**
      * 文字转mp3
      *
      * @param text 文字内容
      */
-    public static void TextToMp3(String text,String savePath){
+    public static void TextToMp3(String text, String savePath) {
         ActiveXComponent ax;
         try {
             ax = new ActiveXComponent("Sapi.SpVoice");
@@ -98,10 +102,25 @@ public class ConverTxtTools {
         }
     }
 
-    public static void main(String[] args)throws Exception {
+    public static void runMp3ChangeText(String modelPath, String mp3Path, String savePath) throws Exception {
+        List<File> files = FileUtil.loopFiles(mp3Path);
+        List<File> collect = files.stream().filter(item -> {
+            String suffix = item.getName().substring(item.getName().lastIndexOf("."), item.getName().length());
+            return ".mp3".equals(suffix);
+        }).collect(Collectors.toList());
+        collect.forEach(item -> {
+            try {
+                Mp3toText(modelPath, item.getAbsolutePath(), savePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public static void main(String[] args) throws Exception {
 //        Mp3toText("D:\\application\\model\\vosk-model-cn-0.22","D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\09.mp3");
-        Mp3toText("D:\\application\\model\\vosk-model-small-cn-0.22","D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\09.mp3");
-        TextToMp3("大风起兮，云飞扬，安得猛士兮，守四方！","D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\test.mp3");
+        runMp3ChangeText("D:\\application\\model\\vosk-model-small-cn-0.22", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）");
+        TextToMp3("大风起兮，云飞扬，安得猛士兮，守四方！", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\test.mp3");
         System.out.println("执行完毕");
     }
 
