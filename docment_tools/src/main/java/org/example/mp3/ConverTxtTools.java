@@ -118,8 +118,13 @@ public class ConverTxtTools {
     }
 
     public static void main(String[] args) throws Exception {
-//        Mp3toText("D:\\application\\model\\vosk-model-cn-0.22","D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\09.mp3");
-        runMp3ChangeText("D:\\application\\model\\vosk-model-small-cn-0.22", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）");
+        /**
+         * 复杂的模型精准度高，但是速度会稍微慢一点
+         */
+        String simpleModel = "D:\\application\\model\\vosk-model-small-cn-0.22";
+        String model = "D:\\application\\model\\vosk-model-cn-0.22";
+        String resouce = "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）";
+        runMp3ChangeText(model, resouce, resouce);
         TextToMp3("大风起兮，云飞扬，安得猛士兮，守四方！", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\test.mp3");
         System.out.println("执行完毕");
     }
