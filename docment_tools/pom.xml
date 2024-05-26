@@ -38,6 +38,27 @@
             <artifactId>javacv-platform</artifactId>
         </dependency>
 
+        <!-- 获取音频信息 -->
+        <dependency>
+            <groupId>org</groupId>
+            <artifactId>jaudiotagger</artifactId>
+        </dependency>
+
+        <!-- 语音识别 -->
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alphacephei</groupId>
+            <artifactId>vosk</artifactId>
+        </dependency>
+        <!-- 文字转语音 -->
+        <dependency>
+            <groupId>com.hynnet</groupId>
+            <artifactId>jacob</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
