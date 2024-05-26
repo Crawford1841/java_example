@@ -508,15 +508,15 @@ public class ConverVideoTools {
         File file = new File(videofolder);
         File[] files = file.listFiles();
         List<File> collect = Arrays.stream(files).collect(Collectors.toList());
-        List<File> vedios = collect.stream().filter(item -> {
+        List<File> videos = collect.stream().filter(item -> {
             String suffix = item.getName().substring(item.getName().lastIndexOf("."), item.getName().length());
             return originSubifx.equals(suffix);
         }).collect(Collectors.toList());
 
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         ExecutorService executorService = Executors.newFixedThreadPool(1);
-        for(int i=0;i<vedios.size();i++){
-            File item = vedios.get(i);
+        for(int i=0;i<videos.size();i++){
+            File item = videos.get(i);
             //检测本地是否存在
             String changeVedio = item.getAbsolutePath().substring(0, item.getAbsolutePath().lastIndexOf("."))+targetSubfix;
 
