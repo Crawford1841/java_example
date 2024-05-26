@@ -513,8 +513,8 @@ public class ConverVideoTools {
             return originSubifx.equals(suffix);
         }).collect(Collectors.toList());
 
-        List<CompletableFuture<Void>> fList = new ArrayList<>();
-        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
         for(int i=0;i<vedios.size();i++){
             File item = vedios.get(i);
             //检测本地是否存在
@@ -527,11 +527,12 @@ public class ConverVideoTools {
             CompletableFuture<Void> voidCompletableFuture = CompletableFuture.runAsync(() -> {
                 converVideoTools.beginConver(item.getAbsolutePath(), targetSubfix, false, false);
             }, executorService);
-            fList.add(voidCompletableFuture);
+            futures.add(voidCompletableFuture);
         }
-        CompletableFuture<Void> all= CompletableFuture.allOf(fList.toArray(new CompletableFuture[0]));
+        CompletableFuture<Void> all= CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
         try {
             all.get();
+            executorService.shutdown();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
