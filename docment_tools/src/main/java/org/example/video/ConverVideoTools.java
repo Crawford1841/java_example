@@ -93,10 +93,10 @@ public class ConverVideoTools {
         File file = new File(path);
         try {
             if (file.exists()) {
-                System.out.println("视频文件不存在=============" + path);
+                System.out.println("===========视频文件存在=============" + path);
                 return true;
             } else {
-                System.out.println("视频文件存在" + path);
+                System.out.println("=========视频文件不存在" + path);
                 return false;
             }
         } catch (Exception e) {

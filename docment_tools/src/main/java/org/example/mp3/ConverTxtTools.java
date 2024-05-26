@@ -110,11 +110,37 @@ public class ConverTxtTools {
         }).collect(Collectors.toList());
         collect.forEach(item -> {
             try {
-                Mp3toText(modelPath, item.getAbsolutePath(), savePath);
+                String file =savePath +"\\"+ item.getName().substring(0,item.getName().lastIndexOf("."))+".txt";
+                if(!checkfile(file)){
+                    Mp3toText(modelPath, item.getAbsolutePath(), savePath);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
+    }
+    /**
+     * 检查文件是否存在-多处都有判断
+     *
+     * @param path
+     * @return
+     */
+
+    private static boolean checkfile(String path) {
+        File file = new File(path);
+        try {
+            if (file.exists()) {
+                System.out.println("========文本文件存在=============" + path);
+                return true;
+            } else {
+                System.out.println("========文本文件不存在" + path);
+                return false;
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("拒绝对文件进行读访问");
+        }
+        return false;
     }
 
     public static void main(String[] args) throws Exception {
@@ -125,7 +151,7 @@ public class ConverTxtTools {
         String model = "D:\\application\\model\\vosk-model-cn-0.22";
         String resouce = "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）";
         runMp3ChangeText(model, resouce, resouce);
-        TextToMp3("大风起兮，云飞扬，安得猛士兮，守四方！", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\test.mp3");
+//        TextToMp3("大风起兮，云飞扬，安得猛士兮，守四方！", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\test.mp3");
         System.out.println("执行完毕");
     }
 

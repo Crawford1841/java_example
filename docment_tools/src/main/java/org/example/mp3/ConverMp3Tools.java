@@ -211,7 +211,9 @@ public class ConverMp3Tools {
             CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                 String filePath = item.getName().substring(0, item.getName().indexOf(".")) + ".mp3";
                 try {
-                    extractAudio(item.getAbsolutePath(), tmpDir, mp4Path + "\\" + filePath);
+                    if(checkfile(filePath)){
+                        extractAudio(item.getAbsolutePath(), tmpDir, mp4Path + "\\" + filePath);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -229,7 +231,29 @@ public class ConverMp3Tools {
             e.printStackTrace();
         }
     }
+    /**
+     * 检查文件是否存在-多处都有判断
+     *
+     * @param path
+     * @return
+     */
 
+    private static boolean checkfile(String path) {
+        File file = new File(path);
+        try {
+            if (file.exists()) {
+                System.out.println("=========音频文件存在=============" + path);
+                return true;
+            } else {
+                System.out.println("============音频文件不存在" + path);
+                return false;
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println("拒绝对文件进行读访问");
+        }
+        return false;
+    }
     public static void main(String[] args) throws Exception {
 //        extractAudio(
 //                "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\09_固定资产（1）.mp4",
