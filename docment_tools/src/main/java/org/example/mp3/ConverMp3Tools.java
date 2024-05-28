@@ -211,7 +211,7 @@ public class ConverMp3Tools {
             CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
                 String filePath = item.getName().substring(0, item.getName().indexOf(".")) + ".mp3";
                 try {
-                    if(checkfile(filePath)){
+                    if(!checkfile(filePath)){
                         extractAudio(item.getAbsolutePath(), tmpDir, mp4Path + "\\" + filePath);
                     }
                 } catch (Exception e) {
