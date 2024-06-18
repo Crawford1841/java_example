@@ -1,4 +1,4 @@
-package org.example.xmind.core;
+package org.example.markdown.core;
 
 public enum TextType {
     LI,

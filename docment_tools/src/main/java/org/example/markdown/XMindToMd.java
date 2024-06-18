@@ -1,4 +1,4 @@
-package org.example.xmind;
+package org.example.markdown;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import org.codehaus.plexus.util.StringUtils;
 import org.example.utils.XMindUtils;
 import org.example.utils.ZipUtils;
-import org.example.xmind.core.AbstractToMD;
+import org.example.markdown.core.AbstractToMD;
 import org.xmind.core.ITopic;
 
 /**

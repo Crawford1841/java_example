@@ -1,4 +1,4 @@
-package org.example.xmind;
+package org.example.markdown;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.codehaus.plexus.util.IOUtil;
-import org.example.xmind.core.AbstractToMD;
+import org.example.markdown.core.AbstractToMD;
 
 /**
  * 工具类

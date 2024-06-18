@@ -1,4 +1,4 @@
-package org.example.xmind;
+package org.example.markdown;
 
 import java.io.IOException;
 import java.util.function.Consumer;

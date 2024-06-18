@@ -1,4 +1,4 @@
-package org.example.xmind.core;
+package org.example.markdown.core;
 
 import java.util.Set;
 

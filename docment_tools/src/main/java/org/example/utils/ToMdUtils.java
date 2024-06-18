@@ -2,9 +2,9 @@ package org.example.utils;
 
 import java.io.IOException;
 import java.util.function.Consumer;
-import org.example.xmind.PosToMd;
-import org.example.xmind.ToMdInterface;
-import org.example.xmind.XMindToMd;
+import org.example.markdown.PosToMd;
+import org.example.markdown.ToMdInterface;
+import org.example.markdown.XMindToMd;
 
 public class ToMdUtils {
 
@@ -16,7 +16,7 @@ public class ToMdUtils {
      * @param filePath
      * @param stringBuilderConsumer 输出到 stringBuilderConsumer （注意会多次调用）
      * @return
-     *      @see org.example.xmind.ToMdInterface
+     *      @see org.example.markdown.ToMdInterface
      * @throws IOException
      */
     public static ToMdInterface toMD(String filePath, Consumer<StringBuilder> stringBuilderConsumer) throws IOException {
