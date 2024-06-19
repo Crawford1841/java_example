@@ -43,6 +43,7 @@
     <module>java_elasticsearch/es_springboot_7</module>
     <module>java_desgin</module>
     <module>docment_tools</module>
+    <module>java_encryption</module>
   </modules>
 
   <properties>
@@ -171,7 +172,7 @@
       <dependency>
         <groupId>cn.hutool</groupId>
         <artifactId>hutool-all</artifactId>
-        <version>5.5.2</version>
+        <version>5.8.20</version>
       </dependency>
       <dependency>
         <groupId>org.bytedeco</groupId>
@@ -215,6 +216,19 @@
         <groupId>com.github.eljah</groupId>
         <artifactId>xmindjbehaveplugin</artifactId>
         <version>0.8</version>
+      </dependency>
+<!--      控制台命令-->
+      <dependency>
+        <groupId>info.picocli</groupId>
+        <artifactId>picocli</artifactId>
+        <version>4.6.3</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.14.0</version>
       </dependency>
 
     </dependencies>

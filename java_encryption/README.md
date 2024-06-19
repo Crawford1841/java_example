@@ -1,0 +1,1 @@
+https://doc.hutool.cn/pages/SecureUtil/#%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86
