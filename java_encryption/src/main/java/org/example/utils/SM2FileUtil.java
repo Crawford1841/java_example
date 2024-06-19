@@ -1,12 +1,8 @@
 package org.example.utils;
 
-/*
- * @author huangwei
- * @emaill 1142488172@qq.com
- * @date 2024/6/19 20:20
- */
 
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.BCUtil;
@@ -25,13 +21,16 @@ import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 import sun.misc.BASE64Decoder;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 文件加解密——sm2
+ * @author huangwei
+ * @emaill 1142488172@qq.com
+ * @date 2024/6/19 20:20
+ * 整个文件数据加解密——sm2
  * 文件名加解密——DES
  */
 @Slf4j
@@ -53,6 +52,7 @@ public class SM2FileUtil {
     // iv：偏移量，ECB模式不需要，CBC模式下必须为8位
     public static final String iv = "huangwei";
 
+    private static DES des = new DES(Mode.CBC, Padding.PKCS5Padding, key.getBytes(), iv.getBytes());
     /**
      * 生成SM2公私钥
      *
@@ -132,12 +132,12 @@ public class SM2FileUtil {
     /**
      * SM2 文件加密
      *
-     * @param publicKey     公钥
-     * @param dataBytes     提交的原始文件以流的形式
-     * @param outputPath    输出的加密文件路径
-     * @param fileName      输出的加密文件名称
+     * @param publicKey  公钥
+     * @param dataBytes  提交的原始文件以流的形式
+     * @param outputPath 输出的加密文件路径
+     * @param fileName   输出的加密文件名称
      */
-    public static Boolean lockFile(String publicKey, byte[] dataBytes, String outputPath, String fileName) throws Exception {
+    public static Boolean lockFile(String publicKey, byte[] dataBytes, String outputPath, String fileName)  {
         Boolean flag = false;
         if (StringUtils.isEmpty(publicKey) || null == dataBytes ||
                 StringUtils.isEmpty(outputPath) || StringUtils.isEmpty(fileName)) {
@@ -195,8 +195,8 @@ public class SM2FileUtil {
     /**
      * 通过私钥进行文件签名
      *
-     * @param privateKey    私钥
-     * @param dataBytes 需要签名的文件以流的形式
+     * @param privateKey 私钥
+     * @param dataBytes  需要签名的文件以流的形式
      * @throws Exception
      */
     public static String generateFileSignByPrivateKey(String privateKey, byte[] dataBytes) throws Exception {
@@ -209,7 +209,7 @@ public class SM2FileUtil {
             try {
                 //----------------------20210830优化:私钥HEX处理---------------------------------
                 byte[] decode = Base64.decode(privateKey);
-                SM2 sm3 = new SM2(decode,null);
+                SM2 sm3 = new SM2(decode, null);
                 byte[] bytes = BCUtil.encodeECPrivateKey(sm3.getPrivateKey());
                 String privateKeyHex = HexUtil.encodeHexStr(bytes);
                 //------@End----------------20210830优化:私钥HEX处理------------------------------
@@ -237,7 +237,7 @@ public class SM2FileUtil {
      * 通过公钥进行文件验签
      *
      * @param publicKey 公钥
-     * @param sign 签名（原先为hex处理后的16位，现在改为base处理后的64位）
+     * @param sign      签名（原先为hex处理后的16位，现在改为base处理后的64位）
      * @param dataBytes 需要验签的文件数据以流的形式
      * @return
      * @throws Exception
@@ -279,6 +279,37 @@ public class SM2FileUtil {
         }
     }
 
+    /**
+     * 文件名DES加密
+     * @param fileName
+     * @return
+     */
+    public static String fileNameDESEncrypt(String fileName) {
+        log.info("文件加密前的名称：{}",fileName);
+        String encrypt = Base64.encode(des.encryptBase64(fileName));
+        log.info("文件加密名称：{}",encrypt);
+        return encrypt;
+    }
+
+    /**
+     * 文件名DES解密
+     * @param fileName
+     * @return
+     */
+    public static String fileNameDESDencrypt(String fileName) {
+        log.info("文件解密前的名称：",fileName);
+        BASE64Decoder decoder = new BASE64Decoder();
+        String str = null;
+        try {
+            str = new String(decoder.decodeBuffer(fileName), "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String decrypt = des.decryptStr(str);
+        log.info("文件解密后的名称：{}",decrypt);
+        return decrypt;
+    }
+
     public static void main(String[] args) throws Exception {
 //        String text = "====测ab试加解密=======";
 //        Map<String, String> stringStringMap = generateSm2Key();
@@ -289,22 +320,32 @@ public class SM2FileUtil {
 //        System.out.println(encryptBase64);
 //        System.out.println(decryptBase64);
 
+        /**
+         * ==============文件加密===============
+         */
+//        File file = new File("D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\10_固定资产（2）.mp4");
+//        String name = file.getName();
+//
+//        String encrypt = Base64.encode(des.encryptBase64(name));
+//        System.out.println("加密名称："+encrypt);
+//        file.delete();
+//
+//        byte[] bytes = FileUtil.readBytes(file);
+//        System.out.println("保存路径："+file.getParentFile().getAbsolutePath());
+//        lockFile(PUBLIC_KEY,bytes,file.getParentFile().getAbsolutePath(),encrypt);
 
-        DES des = new DES(Mode.CBC, Padding.PKCS5Padding, key.getBytes(), iv.getBytes());
-        String encrypt = Base64.encode(des.encryptBase64("10_固定资产加解密.mp4"));
-        System.out.println("加密名称："+encrypt);
-
-        byte[] bytes = FileUtils.fileToByte("D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\10_固定资产（2）.mp4");
-        lockFile(PUBLIC_KEY,bytes,"D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）",encrypt);
-
-
+        /**
+         * ========文件解密==========
+         */
+        File file = new File("D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\ZXlCZEVzdHlOMkoyYzc0cFR5TnA1ampDSEY3UWY4VjN6QUd6cGhuUEV0ST0=");
         BASE64Decoder decoder = new BASE64Decoder();
-        String str = new String(decoder.decodeBuffer(encrypt), "UTF-8");
+        String str = new String(decoder.decodeBuffer("ZXlCZEVzdHlOMkoyYzc0cFR5TnA1ampDSEY3UWY4VjN6QUd6cGhuUEV0ST0="), "UTF-8");
         String decrypt = des.decryptStr(str);
-        System.out.println("解密名称："+decrypt);
+        System.out.println("解密名称：" + decrypt);
 
-        unlockFile(PRIVATE_KEY,"D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\"+encrypt,
-                "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）",
+        System.out.println("保存路径：" + file.getParentFile().getAbsolutePath());
+        unlockFile(PRIVATE_KEY, file.getAbsolutePath(),
+                file.getParentFile().getAbsolutePath(),
                 decrypt);
 
 

@@ -1,4 +1,4 @@
-package org.example.aes.file;
+package org.example.aes;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

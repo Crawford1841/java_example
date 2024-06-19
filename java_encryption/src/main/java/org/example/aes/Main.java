@@ -1,4 +1,4 @@
-package org.example.aes.file;
+package org.example.aes;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,7 +77,9 @@ public class Main  implements  Runnable{
     }
 
     public static void main(String[] args) {
-        CommandLine.run(new Main(), args);
+//        CommandLine.run(new Main(), args);
+        int execute = new CommandLine(new Main()).execute(args);
+        System.out.println(execute);
 
     }
 }
