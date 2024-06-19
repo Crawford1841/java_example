@@ -29,10 +29,28 @@
       <groupId>cn.hutool</groupId>
       <artifactId>hutool-all</artifactId>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk18on</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
   </dependencies>
   <build>
@@ -60,6 +78,14 @@
           </descriptorRefs>
           <appendAssemblyId>false</appendAssemblyId>
           <outputDirectory>./</outputDirectory>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
         </configuration>
       </plugin>
     </plugins>

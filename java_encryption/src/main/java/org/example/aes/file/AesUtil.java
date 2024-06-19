@@ -29,6 +29,8 @@ public class AesUtil {
     private static final String CHARSET = "UTF-8";
 
     private static final String EN_FILE_FLAG = ".gpg";
+    public static final String PUBLIC_KEY = "9940d11c1e8475709a4a3628bdf04314b2dce52d3fff406b4763510c273345eb";
+    public static final String PRIVATE_KEY = "b02871a42efeeb2e9900922218c974ee6ec67b63c1ecfffe7629799a47b5216";
 
 
 
