@@ -19,8 +19,7 @@ public class SimpleDencryptMain implements Runnable {
     public void run() {
         String dir = "";
         Scanner in = new Scanner(System.in);
-        log.info("本软件仅用于学习交流使用，使用软件不当，造成的损失由使用者自行承担。\n"
-                + "版权与免责声明的最终解释权归软件作者所有！");
+        log.info("本软件仅限于学习交流使用，若有其它用途，造成的损失由使用者自行承担！！！版权与免责声明的最终解释权归软件作者所有！！！！");
 
         while(true){
             log.info("请输入要解密的文件根目录");
