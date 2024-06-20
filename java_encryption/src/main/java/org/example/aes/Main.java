@@ -7,6 +7,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import picocli.CommandLine;
 
+/**
+ * 加密
+ * 对当前目录下，以 .java 结尾的文件进行加密，密码是Aa111111
+ *
+ * java -jar .\AesTool.jar -d ./ -f ".*.java$" -p Aa111111 -en
+ *
+ * 解密
+ * 对当前目录下，以 .gpg 结尾的文件进行解密，密码是 Aa111111
+ *
+ * java -jar .\AesTool.jar -d ./ -f ".*.gpg$" -p Aa111111 -de
+ */
 @CommandLine.Command(name = "Aes 加解密工具", mixinStandardHelpOptions = true, version = "1.0", description = "")
 public class Main  implements  Runnable{
     @CommandLine.Option(names = {"-p", "--password"}, description = "密码，小于等于16位", required = true,interactive = true, arity = "0..1", hidden = true)
@@ -79,7 +90,7 @@ public class Main  implements  Runnable{
     public static void main(String[] args) {
 //        CommandLine.run(new Main(), args);
         int execute = new CommandLine(new Main()).execute(args);
-        System.out.println(execute);
+        System.exit(execute);
 
     }
 }

@@ -1,15 +1,7 @@
 package org.example.utils;
 
-import cn.hutool.core.util.HexUtil;
-import cn.hutool.crypto.BCUtil;
 import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.asymmetric.SM2;
-import cn.hutool.crypto.symmetric.SymmetricCrypto;
-import org.apache.commons.lang3.ArrayUtils;
-import org.bouncycastle.crypto.engines.SM2Engine;
-import org.bouncycastle.crypto.signers.PlainDSAEncoding;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
-
 import java.util.Arrays;
 
 /**
@@ -26,6 +18,10 @@ public class FileShardingUtils {
 
     public static final String PUBLIC_KEY = "04d2f6e0b7c272994f50c27a291d8ba38395dde8ac091cd72dd1fbf7f296c69060d0701594dd9e5877e12fef2afede1ad9ff5671e66fb90daf5f9257114b4147cc";
     public static final String PRIVATE_KEY = "959c8ccc6b06dab71dab023d95ef7ef5717174f68e1d45f2ddc9835b73bcef40";
+
+    public static final String key = "20240619";
+    // iv：偏移量，ECB模式不需要，CBC模式下必须为8位
+    public static final String iv = "huangwei";
 
     /**
      * 加密文件

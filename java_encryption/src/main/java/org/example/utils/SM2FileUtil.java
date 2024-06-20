@@ -1,8 +1,6 @@
 package org.example.utils;
 
-
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.BCUtil;
@@ -11,6 +9,10 @@ import cn.hutool.crypto.Padding;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.SM2;
 import cn.hutool.crypto.symmetric.DES;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.crypto.engines.SM2Engine;
@@ -21,17 +23,13 @@ import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 import sun.misc.BASE64Decoder;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author huangwei
  * @emaill 1142488172@qq.com
  * @date 2024/6/19 20:20
  * 整个文件数据加解密——sm2
  * 文件名加解密——DES
+ * TODO 大文件还存在问题，需要做分片，尽量减少在内存里面操作
  */
 @Slf4j
 public class SM2FileUtil {

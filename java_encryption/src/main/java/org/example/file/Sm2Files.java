@@ -5,17 +5,16 @@ package org.example.file;
  * @emaill 1142488172@qq.com
  * @date 2024/6/19 22:09
  * 对文件的根目录下的所有文件及文件文件名、文件内容进行加解密
+ * TODO 整个文件加密，大文件不友好，需要另行做分片处理
  */
-
-import cn.hutool.core.io.FileUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.example.utils.SM2FileUtil;
-
-import java.io.File;
-import java.util.List;
 
 import static org.example.utils.SM2FileUtil.PRIVATE_KEY;
 import static org.example.utils.SM2FileUtil.PUBLIC_KEY;
+
+import cn.hutool.core.io.FileUtil;
+import java.io.File;
+import lombok.extern.slf4j.Slf4j;
+import org.example.utils.SM2FileUtil;
 
 @Slf4j
 public class Sm2Files {
@@ -145,6 +144,9 @@ public class Sm2Files {
         File newFile = new File(file.getParentFile(), encrypt);
         if (!newFile.equals(file)) {
             File renamed = FileUtil.rename(file, encrypt, true);
+            if(renamed.length()>Integer.MAX_VALUE){
+                throw new RuntimeException("单个文件大小不能超过2Gb");
+            }
             if (renamed.isFile()) {
                 byte[] bytes = FileUtil.readBytes(renamed);
                 log.info("目标文件：{},保存目录：{}",renamed.getAbsolutePath(), renamed.getParentFile().getAbsolutePath());

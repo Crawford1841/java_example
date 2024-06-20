@@ -55,6 +55,7 @@
   </dependencies>
   <build>
     <plugins>
+
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
@@ -66,11 +67,11 @@
           </execution>
         </executions>
         <configuration>
-          <finalName>AesTool</finalName>
+          <finalName>SimpleEncryptMain</finalName>
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>io.dc.Main</mainClass> <!-- 此处为主入口-->
+              <mainClass>org.example.run.SimpleEncryptMain</mainClass> <!-- 此处为主入口-->
             </manifest>
           </archive>
           <descriptorRefs>
@@ -80,6 +81,7 @@
           <outputDirectory>./</outputDirectory>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -88,6 +90,9 @@
           <target>8</target>
         </configuration>
       </plugin>
+
+
     </plugins>
   </build>
+
 </project>
