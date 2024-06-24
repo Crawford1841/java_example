@@ -559,9 +559,9 @@ class Contants {
     public static final String ffmpegpath = "D:\\application\\ffmpeg-master-latest-win64-gpl\\bin\\ffmpeg.exe";        // ffmpeg工具安装位置
     public static final String mencoderpath = "D:\\application\\mplayer-svn-38151-x86_64";    // mencoder工具安装的位置
 
-    public static final String videofolder = "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\";    // 需要被转换格式的视频目录
+    public static final String videofolder = "D:\\BaiduNetdiskDownload\\";    // 需要被转换格式的视频目录
 
-    public static final String targetfolder = "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\"; // 转码后视频保存的目录
+    public static final String targetfolder = "D:\\BaiduNetdiskDownload\\"; // 转码后视频保存的目录
     public static final String imageRealPath = "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\"; // 截图的存放目录
 
 

@@ -1,6 +1,7 @@
 package org.example.utils;
 
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.BCUtil;
@@ -321,30 +322,28 @@ public class SM2FileUtil {
         /**
          * ==============文件加密===============
          */
-//        File file = new File("D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\10_固定资产（2）.mp4");
-//        String name = file.getName();
+        File file = new File("D:\\考试\\interview\\01性能优化\\01-项目性能优化-课堂笔记.pdf");
+        String name = file.getName();
 //
-//        String encrypt = Base64.encode(des.encryptBase64(name));
-//        System.out.println("加密名称："+encrypt);
-//        file.delete();
-//
-//        byte[] bytes = FileUtil.readBytes(file);
-//        System.out.println("保存路径："+file.getParentFile().getAbsolutePath());
-//        lockFile(PUBLIC_KEY,bytes,file.getParentFile().getAbsolutePath(),encrypt);
+        String encrypt = Base64.encode(des.encryptBase64(name));
+        System.out.println("加密名称："+encrypt);
+        byte[] bytes = FileUtil.readBytes(file);
+        System.out.println("保存路径："+file.getParentFile().getAbsolutePath());
+        lockFile(PUBLIC_KEY,bytes,file.getParentFile().getAbsolutePath(),encrypt);
 
         /**
          * ========文件解密==========
          */
-        File file = new File("D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\ZXlCZEVzdHlOMkoyYzc0cFR5TnA1ampDSEY3UWY4VjN6QUd6cGhuUEV0ST0=");
-        BASE64Decoder decoder = new BASE64Decoder();
-        String str = new String(decoder.decodeBuffer("ZXlCZEVzdHlOMkoyYzc0cFR5TnA1ampDSEY3UWY4VjN6QUd6cGhuUEV0ST0="), "UTF-8");
-        String decrypt = des.decryptStr(str);
-        System.out.println("解密名称：" + decrypt);
+//        File file = new File("D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\ZXlCZEVzdHlOMkoyYzc0cFR5TnA1ampDSEY3UWY4VjN6QUd6cGhuUEV0ST0=");
+//        BASE64Decoder decoder = new BASE64Decoder();
+//        String str = new String(decoder.decodeBuffer("ZXlCZEVzdHlOMkoyYzc0cFR5TnA1ampDSEY3UWY4VjN6QUd6cGhuUEV0ST0="), "UTF-8");
+//        String decrypt = des.decryptStr(str);
+//        System.out.println("解密名称：" + decrypt);
 
-        System.out.println("保存路径：" + file.getParentFile().getAbsolutePath());
-        unlockFile(PRIVATE_KEY, file.getAbsolutePath(),
-                file.getParentFile().getAbsolutePath(),
-                decrypt);
+//        System.out.println("保存路径：" + file.getParentFile().getAbsolutePath());
+//        unlockFile(PRIVATE_KEY, file.getAbsolutePath(),
+//                file.getParentFile().getAbsolutePath(),
+//                decrypt);
 
 
     }

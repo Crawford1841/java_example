@@ -21,9 +21,7 @@ import javax.sound.sampled.AudioSystem;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-
 public class ConverTxtTools {
     /**
      * mp3转文字
@@ -133,7 +131,7 @@ public class ConverTxtTools {
                 System.out.println("========文本文件存在=============" + path);
                 return true;
             } else {
-                System.out.println("========文本文件不存在" + path);
+                System.out.println("========文本文件不存在=========" + path);
                 return false;
             }
         } catch (Exception e) {
@@ -149,7 +147,7 @@ public class ConverTxtTools {
          */
         String simpleModel = "D:\\application\\model\\vosk-model-small-cn-0.22";
         String model = "D:\\application\\model\\vosk-model-cn-0.22";
-        String resouce = "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）";
+        String resouce = "D:\\BaiduNetdiskDownload";
         runMp3ChangeText(model, resouce, resouce);
 //        TextToMp3("大风起兮，云飞扬，安得猛士兮，守四方！", "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\test.mp3");
         System.out.println("执行完毕");
