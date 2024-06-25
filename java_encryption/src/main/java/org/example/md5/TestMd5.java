@@ -17,8 +17,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class TestMd5 {
     public static void main(String[] args){
-        String md5 = computeMD5(new File("D:\\考试\\interview\\01性能优化\\01-项目性能优化-课堂笔记.pdf"));
-        String md5_en = computeMD5(new File("D:\\考试\\interview\\01性能优化\\NEEzNDlyL3B3cXR4b1RudUl6UzZuN3ZTNWFZdDdaVGNxMU9KTlZ1UGwrNms5NXgzUWtCc0l3PT0="));
+        String md5 = computeMD5(new File("D:\\04-JVM虚拟机-课程笔记.pdf"));
+        String md5_en = computeMD5(new File("D:\\SXdDd0pNaFVCcmlZSkpFS243T09EcWJMRFg5WXVUZUUxWmduMEpQcEUyZ0hFV3hCZklLSnV3PT0="));
         System.out.println(md5);
         System.out.println(md5_en);
     }
