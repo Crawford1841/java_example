@@ -20,7 +20,7 @@ import org.example.conf.Constatnt;
 public class ZhConverTxt {
 
     public static void main(String[] args) throws IOException {
-        List<File> files = FileUtil.loopFiles("D:\\workspace\\my_github\\java_example\\docment_tools\\src\\main\\resources\\text");
+        List<File> files = FileUtil.loopFiles("D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）");
         List<File> collect = files.stream().filter(item -> Constatnt.exist(Constatnt.suffix_text, item))
                 .collect(Collectors.toList());
 
@@ -35,7 +35,7 @@ public class ZhConverTxt {
                 lines.add(simpleCn);
             }
             System.out.println(file.getParent());
-            FileUtil.writeUtf8Lines(lines,"D:\\basic_document\\DA会计\\"+file.getName());
+            FileUtil.writeUtf8Lines(lines,"D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\"+file.getName());
         }
     }
 }
