@@ -6,16 +6,13 @@ package org.example.pdf;
  * @date 2024/6/11 22:07
  */
 
-
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.rendering.PDFRenderer;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 public class PdfToImage {
     /**
@@ -69,7 +66,7 @@ public class PdfToImage {
     }
 
     public static void main(String[] args) {
-        pdf2png("C:\\Users\\binary\\Desktop\\新建文件夹\\","18-multiversioning.pdf","png");
+        pdf2png("C:\\Users\\Administrator\\Desktop\\文档\\专利类\\","一种头盔固定装置_实用新型专利证书.pdf","png");
     }
 
 }
