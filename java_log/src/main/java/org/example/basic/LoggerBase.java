@@ -17,8 +17,6 @@ public class LoggerBase {
         //记录类名
         //LoggerCtx.target(target);
 
-        //TODO: 暂时不做租户日志隔离
-        //logAct.apply(LogCtx.logger());
         logAct.apply(logger);
 
         LogCtx.adjustStep();
