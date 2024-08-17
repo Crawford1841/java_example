@@ -25,10 +25,6 @@ public class LogCtx {
         //    loggers.put(tenantId, LoggerFactory.getLogger(tenantId));
         //}
         //
-        //loggers.put("10000", LoggerFactory.getLogger("10000"));
-        //loggers.put("10001", LoggerFactory.getLogger("10001"));
-        //loggers.put("10003", LoggerFactory.getLogger("10003"));
-        //loggers.put("10004", LoggerFactory.getLogger("10004"));
         //loggers.put(SYSTEM, LoggerFactory.getLogger(SYSTEM));
     }
 
