@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" monitorInterval="30">
+  <Properties>
+    <property name="LOG_PATTERN"
+      value="%d{yyyy-MM-dd HH:mm:ss:SSS}|%p|%t|%X{TenantId}|%X{TraceId}|%X{StepId}|%m%n"/>
+    <property name="LOG_PATH" value="D:/logs"/>
+    <property name="LOG_NAME" value="case"/>
+  </Properties>
+
+  <appenders>
+    <!--控制台日志-->
+    <console name="console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${LOG_PATTERN}"/>
+    </console>
+
+    <!--文件日志-->
+    <RollingFile name="system" fileName="${LOG_PATH}/system/${LOG_NAME}.log"
+      filePattern="${LOG_PATH}/${LOG_NAME}-%d{yyyy-MM-dd}-%i.log"
+      immediateFlush="true" append="true">
+      <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+      <PatternLayout pattern="${LOG_PATTERN}"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy/>
+        <SizeBasedTriggeringPolicy size="5 MB"/>
+      </Policies>
+    </RollingFile>
+  </appenders>
+  <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+  <loggers>
+    <root level="INFO" includeLocation="false">
+      <appender-ref ref="console"/>
+      <appender-ref ref="system"/>
+    </root>
+  </loggers>
+</configuration>
