@@ -44,6 +44,7 @@
     <module>java_desgin</module>
     <module>docment_tools</module>
     <module>java_encryption</module>
+      <module>java_log</module>
   </modules>
 
   <properties>
