@@ -11,8 +11,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AnalysisLog {
-    static List<String> resLines = new ArrayList<>();
-    static Map<String,Log> logLine = new HashMap<>();
+    static List<String> travelLines = new ArrayList<>(200);
+    static List<String> operateLines = new ArrayList<>(200);
+    static List<String> consoleLines = new ArrayList<>(200);
+    static Map<String,Log> travelLine = new HashMap<>(200);
+    static Map<String,Log> operateLine = new HashMap<>(200);
+    static Map<String,Log> consoleLine = new HashMap<>(200);
     private static void find(List<String> logs){
         if(CollectionUtil.isEmpty(logs)){
             return;
@@ -40,7 +44,7 @@ public class AnalysisLog {
                 System.out.println("接口路径："+url);
                 System.out.println("接口参数："+parms);
                 System.out.println("响应时间: " + matcher.group());
-                System.out.println("日志详情："+log);
+                //System.out.println("日志详情："+log);
 
                 //响应时间
                 Integer newMs = Integer.valueOf(matcher.group().replaceAll("ms", "").trim());
@@ -48,21 +52,30 @@ public class AnalysisLog {
                     StringBuilder sb = new StringBuilder();
                     sb.append("接口："+url+"，");
                     sb.append("参数："+parms+"，");
-                    sb.append("响应时间："+newMs);
-                    if(logLine.containsKey(url)){
-                        Log l = logLine.get(url);
-                        if(newMs>l.getMs()){
-                            l.setContent(sb.toString());
-                        }
+                    sb.append("响应时间："+newMs+"ms");
+                    if(url.indexOf("/travel")>0){
+                        put(travelLine,newMs,sb.toString(),url);
+                    }else if(url.indexOf("/console")>0){
+                        put(consoleLine,newMs,sb.toString(),url);
                     }else{
-                        Log data = new Log();
-                        data.setMs(newMs);
-                        data.setContent(sb.toString());
-                        logLine.put(url,data);
+                        put(operateLine,newMs,sb.toString(),url);
                     }
                 }
             }
         });
+    }
+    private static void put(Map<String,Log> logLine,int newMs,String content,String url){
+        if(logLine.containsKey(url)){
+            Log l = logLine.get(url);
+            if(newMs>l.getMs()){
+                l.setContent(content);
+            }
+        }else{
+            Log data = new Log();
+            data.setMs(newMs);
+            data.setContent(content);
+            logLine.put(url,data);
+        }
     }
     public static void main(String[] args) {
 
@@ -71,10 +84,20 @@ public class AnalysisLog {
             List<String> strings = FileUtil.readUtf8Lines(item);
             find(strings);
         });
-        logLine.entrySet().forEach(item->{
+        travelLine.entrySet().forEach(item->{
             String log = item.getValue().getContent();
-            resLines.add(log);
+            travelLines.add(log);
         });
-        FileUtil.writeUtf8Lines(resLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\接口缓慢日志.log");
+        consoleLine.entrySet().forEach(item->{
+            String log = item.getValue().getContent();
+            consoleLines.add(log);
+        });
+        operateLine.entrySet().forEach(item->{
+            String log = item.getValue().getContent();
+            operateLines.add(log);
+        });
+        FileUtil.writeUtf8Lines(travelLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\travel接口缓慢日志.log");
+        FileUtil.writeUtf8Lines(consoleLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\console接口缓慢日志.log");
+        FileUtil.writeUtf8Lines(operateLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\operator接口缓慢日志.log");
     }
 }
