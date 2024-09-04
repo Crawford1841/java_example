@@ -11,12 +11,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AnalysisLog {
-    private static void find(List<String> logs,String fileName){
+    static List<String> resLines = new ArrayList<>();
+    static Map<String,Log> logLine = new HashMap<>();
+    private static void find(List<String> logs){
         if(CollectionUtil.isEmpty(logs)){
             return;
         }
-        List<String> resLines = new ArrayList<>();
-        Map<String,Log> logLine = new HashMap<>();
         logs.forEach(log->{
             // 正则表达式匹配响应时间
             String regex = "\\d+ ms";
@@ -63,18 +63,18 @@ public class AnalysisLog {
                 }
             }
         });
-        logLine.entrySet().forEach(item->{
-            String log = item.getValue().getContent();
-            resLines.add(log);
-        });
-        FileUtil.writeUtf8Lines(resLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\"+fileName+".log");
     }
     public static void main(String[] args) {
 
         List<File> list = FileUtil.loopFiles("E:\\新建文件夹\\日志统计\\log");
         list.forEach(item->{
             List<String> strings = FileUtil.readUtf8Lines(item);
-            find(strings,item.getName());
+            find(strings);
         });
+        logLine.entrySet().forEach(item->{
+            String log = item.getValue().getContent();
+            resLines.add(log);
+        });
+        FileUtil.writeUtf8Lines(resLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\接口缓慢日志.log");
     }
 }
