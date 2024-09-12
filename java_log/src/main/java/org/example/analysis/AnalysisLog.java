@@ -79,7 +79,7 @@ public class AnalysisLog {
     }
     public static void main(String[] args) {
 
-        List<File> list = FileUtil.loopFiles("E:\\新建文件夹\\日志统计\\log");
+        List<File> list = FileUtil.loopFiles("E:\\新建文件夹\\新建文件夹\\2024-09-04.log");
         list.forEach(item->{
             List<String> strings = FileUtil.readUtf8Lines(item);
             find(strings);
@@ -99,5 +99,14 @@ public class AnalysisLog {
         FileUtil.writeUtf8Lines(travelLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\travel接口缓慢日志.log");
         FileUtil.writeUtf8Lines(consoleLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\console接口缓慢日志.log");
         FileUtil.writeUtf8Lines(operateLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\operator接口缓慢日志.log");
+        //List<String> stringList = FileUtil.readLines("E:\\新建文件夹\\福建.txt", "utf-8");
+        //for(int i=0;i<stringList.size();i++){
+        //    String s = stringList.get(i);
+        //    if(i==stringList.size()-1){
+        //        System.out.println(s);
+        //    }else{
+        //        System.out.println(s+",");
+        //    }
+        //}
     }
 }
