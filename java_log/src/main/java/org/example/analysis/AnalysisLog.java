@@ -3,17 +3,14 @@ package org.example.analysis;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class AnalysisLog {
-    static List<String> travelLines = new ArrayList<>(200);
-    static List<String> operateLines = new ArrayList<>(200);
-    static List<String> consoleLines = new ArrayList<>(200);
     static Map<String,Log> travelLine = new HashMap<>(200);
     static Map<String,Log> operateLine = new HashMap<>(200);
     static Map<String,Log> consoleLine = new HashMap<>(200);
@@ -84,18 +81,21 @@ public class AnalysisLog {
             List<String> strings = FileUtil.readUtf8Lines(item);
             find(strings);
         });
-        travelLine.entrySet().forEach(item->{
-            String log = item.getValue().getContent();
-            travelLines.add(log);
-        });
-        consoleLine.entrySet().forEach(item->{
-            String log = item.getValue().getContent();
-            consoleLines.add(log);
-        });
-        operateLine.entrySet().forEach(item->{
-            String log = item.getValue().getContent();
-            operateLines.add(log);
-        });
+        List<Log> travelLines = travelLine.entrySet().stream().map(item -> {
+            return item.getValue();
+        }).collect(Collectors.toList());
+        travelLines.sort((a,b)->a.getMs().compareTo(b.getMs()));
+
+        List<Log> consoleLines = consoleLine.entrySet().stream().map(item -> {
+            return item.getValue();
+        }).collect(Collectors.toList());
+        consoleLines.sort((a,b)->a.getMs().compareTo(b.getMs()));
+
+        List<Log> operateLines = operateLine.entrySet().stream().map(item -> {
+            return item.getValue();
+        }).collect(Collectors.toList());
+        operateLines.sort((a,b)->a.getMs().compareTo(b.getMs()));
+
         FileUtil.writeUtf8Lines(travelLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\travel接口缓慢日志.log");
         FileUtil.writeUtf8Lines(consoleLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\console接口缓慢日志.log");
         FileUtil.writeUtf8Lines(operateLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\operator接口缓慢日志.log");
