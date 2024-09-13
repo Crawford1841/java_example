@@ -73,6 +73,7 @@ public class AnalysisLog {
             }
         });
     }
+
     private static void put(Map<String,List<Log>> logLine,int newMs,String content,String url,String params){
         Log data = new Log();
         data.setMs(newMs);
@@ -80,6 +81,7 @@ public class AnalysisLog {
         data.setParams(params);
         if(logLine.containsKey(url)){
             List<Log> l = logLine.get(url);
+            System.out.println(url+"，数量："+logLine.size());
             l.add(data);
         }else{
             List<Log> l = new ArrayList<>();
@@ -87,8 +89,8 @@ public class AnalysisLog {
             logLine.put(url,l);
         }
     }
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         List<File> list = FileUtil.loopFiles("E:\\新建文件夹\\新建文件夹\\2024-09-04.log");
         list.forEach(item->{
             List<String> strings = FileUtil.readUtf8Lines(item);
@@ -114,46 +116,8 @@ public class AnalysisLog {
             System.out.println(builder);
             travelLines.add(builder.toString());
         });
+        FileUtil.writeUtf8Lines(travelLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\travel接口缓慢日志.log");
 
-        List<String> consoleLines = new ArrayList<>();
-        consoleLine.entrySet().forEach((item)->{
-            StringBuilder builder = new StringBuilder();
-            List<Log> value = item.getValue();
-            value.sort((a,b)->a.getMs().compareTo(b.getMs()));
-
-            String interfaceName = item.getKey();
-            int count = value.size();
-            int sumTime = value.stream().collect(Collectors.summingInt(Log::getMs));
-            int medianTime = value.get(count / 2).getMs();
-            int avgTime = value.stream().collect(Collectors.averagingInt(Log::getMs)).intValue();
-            int minTime = value.get(0).getMs();
-            int maxTime = value.get(count-1).getMs();
-            String minContexnt = value.get(0).getContent();
-            String maxContenxt = value.get(count-1).getContent();
-            builder.append("接口名称：["+interfaceName+"]，接口请求次数：["+count+"]，总耗时：["+sumTime+"]，中位数耗时：["+medianTime+"]，平均耗时：["+avgTime+"]，最小耗时：["+minTime+"]，最大耗时：["+maxTime+"]，最小耗时请求参数：["+minContexnt+"]，最大耗时请求参数：["+maxContenxt+"]\n");
-            System.out.println(builder);
-            consoleLines.add(builder.toString());
-        });
-
-        List<String> operateLines = new ArrayList<>();
-        operateLine.entrySet().forEach((item)->{
-            StringBuilder builder = new StringBuilder();
-            List<Log> value = item.getValue();
-            value.sort((a,b)->a.getMs().compareTo(b.getMs()));
-
-            String interfaceName = item.getKey();
-            int count = value.size();
-            int sumTime = value.stream().collect(Collectors.summingInt(Log::getMs));
-            int medianTime = value.get(count / 2).getMs();
-            int avgTime = value.stream().collect(Collectors.averagingInt(Log::getMs)).intValue();
-            int minTime = value.get(0).getMs();
-            int maxTime = value.get(count-1).getMs();
-            String minContexnt = value.get(0).getContent();
-            String maxContenxt = value.get(count-1).getContent();
-            builder.append("接口名称：["+interfaceName+"]，接口请求次数：["+count+"]，总耗时：["+sumTime+"]，中位数耗时：["+medianTime+"]，平均耗时：["+avgTime+"]，最小耗时：["+minTime+"]，最大耗时：["+maxTime+"]，最小耗时请求参数：["+minContexnt+"]，最大耗时请求参数：["+maxContenxt+"]\n");
-            System.out.println(builder);
-            operateLines.add(builder.toString());
-        });
 
 
         //List<Log> travel = travelLine.entrySet().stream().map(item -> {
@@ -177,9 +141,6 @@ public class AnalysisLog {
         //List<String> operateLines = operate.stream().map(Log::getContent).collect(Collectors.toList());
         //
         //
-        FileUtil.writeUtf8Lines(travelLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\travel接口缓慢日志.log");
-        FileUtil.writeUtf8Lines(consoleLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\console接口缓慢日志.log");
-        FileUtil.writeUtf8Lines(operateLines,"E:\\新建文件夹\\日志统计\\log\\筛选\\operator接口缓慢日志.log");
         //List<String> stringList = FileUtil.readLines("E:\\新建文件夹\\福建.txt", "utf-8");
         //for(int i=0;i<stringList.size();i++){
         //    String s = stringList.get(i);
