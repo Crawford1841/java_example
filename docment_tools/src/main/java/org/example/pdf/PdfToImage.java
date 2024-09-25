@@ -18,20 +18,23 @@ public class PdfToImage {
     /**
      * 转换全部的pdf
      * @param fileAddress 文件地址
-     * @param filename PDF文件名
+     * @param savePath 文件保存地址
      * @param type 图片类型
      */
-    public static void pdf2png(String fileAddress,String filename,String type) {
+    public static void pdf2png(String fileAddress,String savePath,String type) {
         // 将pdf装图片 并且自定义图片得格式大小
-        File file = new File(fileAddress+"\\"+filename);
+        File file = new File(fileAddress);
         try {
             PDDocument doc = Loader.loadPDF(file);
             PDFRenderer renderer = new PDFRenderer(doc);
             int pageCount = doc.getNumberOfPages();
             for (int i = 0; i < pageCount; i++) {
-                BufferedImage image = renderer.renderImageWithDPI(i, 144); // Windows native DPI
+                /**
+                 * dpi 图片清晰度,越大生成越慢
+                 */
+                BufferedImage image = renderer.renderImageWithDPI(i, 900); // Windows native DPI
                 // BufferedImage srcImage = resize(image, 240, 240);//产生缩略图
-                ImageIO.write(image, type, new File(fileAddress+"\\"+filename+"_"+(i+1)+"."+type));
+                ImageIO.write(image, type, new File(savePath+"\\"+(i+1)+"."+type));
             }
         } catch (IOException e) {
             e.printStackTrace();
