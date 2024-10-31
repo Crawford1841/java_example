@@ -91,7 +91,7 @@ public class AnalysisLog {
     }
 
     public static void main(String[] args) {
-        List<File> list = FileUtil.loopFiles("E:\\新建文件夹\\新建文件夹\\2024-09-04.log");
+        List<File> list = FileUtil.loopFiles("E:\\新建文件夹\\2024-10-27.log");
         list.forEach(item->{
             List<String> strings = FileUtil.readUtf8Lines(item);
             find(strings);

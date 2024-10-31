@@ -27,7 +27,7 @@ public class NoSpring {
         SqlSession session = sqlSessionFactory.openSession(true);
         //创建mapper对象
         LogMapper logMapper = session.getMapper(LogMapper.class);
-        List<File> list = FileUtil.loopFiles("E:\\新建文件夹\\新建文件夹\\2024-09-04.log");
+        List<File> list = FileUtil.loopFiles("E:\\新建文件夹\\2024-10-27.log");
         for(int i=0;i<list.size();i++){
             File item = list.get(i);
             List<String> strings = FileUtil.readUtf8Lines(item);
@@ -39,6 +39,7 @@ public class NoSpring {
         if(CollectionUtil.isEmpty(logs)){
             return;
         }
+
         logs.forEach(log->{
             // 正则表达式匹配响应时间
             String regex = "\\d+ ms";

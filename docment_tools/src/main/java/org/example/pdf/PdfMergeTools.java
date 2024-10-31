@@ -6,15 +6,14 @@ package org.example.pdf;
  * @date 2024/4/27 17:10
  */
 
-
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.stream.Collectors;
+import org.example.utils.CommonUtils;
 
 public class PdfMergeTools {
     /**
@@ -43,16 +42,6 @@ public class PdfMergeTools {
         mergePdf.mergeDocuments(MemoryUsageSetting.setupTempFileOnly().streamCache);
         return new File(targetPath);
     }
-    private static void sort(List<File> collect){
-        Collections.sort(collect, new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-                System.out.println("name："+o1.getName()+"，"+o2.getName());
-                System.out.println(o1.getName().compareTo(o2.getName()));
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
-    }
     public static void main(String[] args) throws IOException {
 //        File file = new File("D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\讲义");
 //        File[] files = file.listFiles();
@@ -60,15 +49,15 @@ public class PdfMergeTools {
 //        sort(collect);
 //        File f = mulFile2One(collect, "D:\\考试\\CPA笔记精选\\会计\\01-零基础预习班-张敬富（23讲全）\\讲义\\预习.pdf");
 
-        File file = new File("D:\\考试\\极客时间-高级Java工程师体系课2.0\\资料代码\\课件代码");
+        File file = new File("E:\\新建文件夹\\156程序员的个人财富课");
         File[] files = file.listFiles();
         List<File> collect = Arrays.stream(files).collect(Collectors.toList());
         List<File> pdfs = collect.stream().filter(item -> {
             String suffix = item.getName().substring(item.getName().lastIndexOf(".")+1, item.getName().length());
             return "pdf".equals(suffix);
         }).collect(Collectors.toList());
-        sort(pdfs);
-        File f = mulFile2One(pdfs, "D:\\考试\\极客时间-高级Java工程师体系课2.0\\资料代码\\课件代码\\网络编程.pdf");
+        CommonUtils.sort(pdfs);
+        File f = mulFile2One(pdfs, "E:\\新建文件夹\\pdf\\程序员的个人财富课.pdf");
         System.out.println(f.length());
     }
 

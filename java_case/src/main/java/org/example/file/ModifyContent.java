@@ -19,9 +19,9 @@ public class ModifyContent {
     //这个路径不能含有zuihou字符!!!!!!! 先将 zuihou-commons-plus 修改为tangyh-commons-plus
     //这个路径不能含有zuihou字符!!!!!!! 先将 zuihou-commons-plus 修改为tangyh-commons-plus
 //    static String dir = "/Users/tangyh/gitlab/test/tangyh-commons-plus";// 文件所在路径，所有文件的根目录，记得修改为你电脑上的文件所在路径
-    static String dir = "D:\\workspace\\量化\\lamp-column-max";// 文件所在路径，所有文件的根目录，记得修改为你电脑上的文件所在路径
-    static String newStr = "huangwei0246@gmail.com";
-    static String oldStr = "306479353@qq.com";
+    static String dir = "D:\\workspace\\量化\\lamp-web-pro-soybean";// 文件所在路径，所有文件的根目录，记得修改为你电脑上的文件所在路径
+    static String newStr = "lamp";
+    static String oldStr = "quantify";
 
     /**
      * @author itmyhome

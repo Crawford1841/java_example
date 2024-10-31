@@ -1,8 +1,9 @@
-package org.example.pdf;
+package org.example.epub;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.example.pdf.PdfToImage;
 import org.example.utils.EpubUtils;
 
 public class PdfToEpub {
